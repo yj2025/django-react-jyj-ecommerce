@@ -53,11 +53,13 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.kakao",  # 카카오로그인 구현시 추가
     #'allauth.socialaccount.providers.naver', # 네이버 로그인 구현시 추가
     # dev_28
-    "rest_framework", # drf
-    "api"
+    "rest_framework", #DRF 
+    "api",
+    "corsheaders",  # dev_3_Fruit
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",  # dev_3_Fruit
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -67,6 +69,14 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",  # #dev_27 추가
 ]
+
+# dev_3_Fruit
+# 정확히 허용할 도메인만
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",  # 프론트 도메인
+# ]
+CORS_ORIGIN_ALLOW_ALL = True  # 어떠한 출처든 상관없이 정보를 공유
+
 
 ROOT_URLCONF = "config.urls"
 
@@ -175,12 +185,14 @@ CART_SESSION_ID = "cart"
 # 추가!! 없으면 오류 발생 "앱이름.모델명" user모델생성 후 allauth말고 내가 생성한 모델을 우선으로 적용
 SITE_ID = 1  # 추가
 
+# dev_27
 AUTHENTICATION_BACKENDS = [
     # 추가 장고에서 사용자의 이름을 기준으로 로그인하도록 설정
     "django.contrib.auth.backends.ModelBackend",
     # 추가 'allauth'의 인증방식 추가
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
 
 # dev_27 소셜로그인 설정
 # 소셜 로그인 시 GET 요청만으로 로그인 처리를 허용
