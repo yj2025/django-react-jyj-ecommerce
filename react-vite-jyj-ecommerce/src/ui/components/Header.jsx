@@ -1,17 +1,18 @@
+import { Outlet } from 'react-router-dom';
 import heroImg1 from '@/assets/fruits/img/hero-img-1.png';
 import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg';
 
-// dev_2_fruit
+//dev_2_fruit
 const Header = () => {
   return (
     <>
       {/* Spinner Start */}
       {/* <div
-        id="spinner"
-        className="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center"
-      >
-        <div className="spinner-grow text-primary" role="status" />
-      </div> */}
+    id="spinner"
+    className="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center"
+  >
+    <div className="spinner-grow text-primary" role="status" />
+  </div> */}
       {/* Spinner End */}
       {/* Navbar start */}
       <div className="container-fluid fixed-top">
