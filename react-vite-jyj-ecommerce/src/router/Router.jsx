@@ -1,3 +1,4 @@
+import MainLayout from '@/ui/layouts/MainLayout';
 import { createBrowserRouter } from 'react-router-dom';
 
 const routes = [
