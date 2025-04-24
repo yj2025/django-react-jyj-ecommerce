@@ -1,5 +1,21 @@
-// dev_2_fruit
+import { getCategories } from '@/api/CategoryApi';
+import { useEffect, useState } from 'react';
+
+//dev_2_fruit
 const Products = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getCategories()
+      .then((res) => {
+        console.log(res);
+        setCategories(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <>
       {/* Fruits Shop Start*/}
