@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router-dom';
 import paymentImg from '@/assets/fruits/img/payment.png';
+// let paymentImg = '@/assets/fruits/img/payment.png'
 
 //dev_2_fruit
 const Footer = () => {
