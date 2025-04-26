@@ -7,7 +7,7 @@ from accounts import views
 # dev_9
 app_name = "accounts"
 
-# 이름 짓는법 = 변수, 함수 , 클래스 이름
+# 이름 짓는법 = 변수, 함수, 클래스 이름
 # login_user
 # 의미_그룹(통일)
 

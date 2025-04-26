@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
-# from .forms import RegisterUserForm # 상대 경로형식
-from accounts.forms import RegisterUserForm  # 절대 경로 형식
+# from .forms import RegisterUserForm # 상대 경로
+from accounts.forms import RegisterUserForm  # 절대 경로 (추천)
 
 # dev_23
 from accounts.models import User
@@ -11,22 +11,16 @@ import json
 from cart.cart import Cart
 from store.models import Product
 
-# Create your views here.
-
-
 # class HTTPRequest:
 #    POST = {"username":"admim","password":"1234"}
 #    GET = {}
-# dev_9
 
-
+# dev_9 로그인/로그아웃
 def logout_user(request):
     logout(request)  # session 에 저장된 sessionid 삭제
     return redirect("/")
 
-
 def login_user(request):
-
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -40,8 +34,8 @@ def login_user(request):
             saved_cart = (
                 current_user.old_cart
             )  # {"3": {"quantity": 1, "price": "24000"}}
+            
             # add
-            #
             cart = Cart(request)
 
             if len(cart) > 0:
