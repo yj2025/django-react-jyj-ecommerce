@@ -65,16 +65,14 @@ def login_user(request):
 # dev_10
 # dev_11 회원가입 로직
 def register_user(request):
-
     if request.method == "POST":
-
         if request.POST["password1"] == request.POST["password2"]:
-            form = RegisterUserForm(request.POST)  # 모델에 다가 값을 넣음
+            form = RegisterUserForm(request.POST)  # 모델에 값을 넣음
 
             if form.is_valid():
                 form.save()  # 회원 DB 저장
 
-                # 회원가입 하자 마자, 로그인 시켜줌
+                # 회원가입 후 바로 로그인
                 username = form.cleaned_data.get("username")
                 raw_password = form.cleaned_data.get("password1")
 
