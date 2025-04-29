@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "rest_framework", #DRF 
     "api",
     "corsheaders",  # dev_3_Fruit
+    'django_seed',
 ]
 
 MIDDLEWARE = [
