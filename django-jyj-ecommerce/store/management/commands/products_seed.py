@@ -62,7 +62,7 @@ class Command(BaseCommand):
             for product_name in product_names:
                 price = Decimal(random.randint(5000, 20000)) / 100
                 is_sale = random.choice([True, False])
-                sale_price = int(price * Decimal("0.8")) if is_sale else None
+                sale_price = int(price * Decimal("0.8")) if is_sale else Decimal("0")
 
                 product = Product.objects.create(
                     name=product_name,
