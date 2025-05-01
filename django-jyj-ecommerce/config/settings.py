@@ -52,11 +52,10 @@ INSTALLED_APPS = [
     #'allauth.socialaccount.providers.google', #구글로그인 구현시 추가
     "allauth.socialaccount.providers.kakao",  # 카카오로그인 구현시 추가
     #'allauth.socialaccount.providers.naver', # 네이버 로그인 구현시 추가
-    # dev_28
-    "rest_framework", #DRF 
+    "rest_framework", # dev_28 DRF 
     "api",
     "corsheaders",  # dev_3_Fruit
-    'django_seed',
+    "djoser", # dev_5_Fruit
 ]
 
 MIDDLEWARE = [
@@ -231,4 +230,20 @@ SOCIALACCOUNT_PROVIDERS = {
             "prompt": "select_account",  # 추가 간편로그인을 지원해줌
         },
     }
+}
+
+
+# dev_5_Fruit
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=3),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }

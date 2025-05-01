@@ -14,7 +14,7 @@ app_name = "api"
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register("categories", category_views.CategoryViewSet)
+router.register(r"categories", category_views.CategoryViewSet)
 
 category_list = category_views.CategoryViewSet.as_view(
     {"get": "list", "post": "create"}
@@ -65,8 +65,12 @@ urlpatterns = [
     # PATCH /categories/<pk>/
     # DELETE /categories/<pk>/
     # path("", include(router.urls)),
-    path("categories/", category_list),
-    path("category/<int:pk>/", category_detail),
+    # path("categories/", category_list),
+    # path("category/<int:pk>/", category_detail),
+    path("", include(router.urls)),
+    # dev_5_Fruit
+    path("auth/", include("djoser.urls")),
+    path("auth/", include("djoser.urls.jwt")),
 ]
 
 
