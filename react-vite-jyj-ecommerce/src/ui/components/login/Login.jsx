@@ -1,3 +1,6 @@
+import '/src/assets/login/css/login.css';
+
+//dev_5_Fruit
 const Login = () => {
   return (
     <div className="form-bg">
@@ -16,8 +19,8 @@ const Login = () => {
                     className="form-control"
                     type="email"
                     placeholder="email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    // value={email}
+                    // onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -26,11 +29,11 @@ const Login = () => {
                     className="form-control"
                     type="password"
                     placeholder="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    // value={password}
+                    // onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button type="button" className="btn btn-default" onClick={handleLogin}>
+                <button type="button" className="btn btn-default">
                   Login
                 </button>
               </form>
