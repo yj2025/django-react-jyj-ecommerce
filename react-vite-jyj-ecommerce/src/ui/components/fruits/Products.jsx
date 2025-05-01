@@ -16,14 +16,20 @@ const Products = () => {
     //카테고리 가져오기
     getCategories()
       .then((res) => {
-        console.log('API Response:', res);
-        // 응답 데이터가 배열인지 확인
-        const categoriesData = Array.isArray(res.data) ? res.data : [];
-        setCategories(categoriesData);
+        console.log(res);
+        setCategories(res.data);
       })
       .catch((err) => {
-        console.error('Error fetching categories:', err);
-        setCategories([]); // 에러 발생 시 빈 배열로 설정
+        console.log(err);
+      });
+    // 상품 가져오기
+    getProdcuts()
+      .then((res) => {
+        console.log(res);
+        setCategories(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
   //   //두번째 사용방법  categories가 변경될 때마다 실행됩니다.
