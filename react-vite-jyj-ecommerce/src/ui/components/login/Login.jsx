@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const auth = useAuth();
+  const { login } = useAuth();
 
   const handleLogin = async (event) => {
     event.preventDefault();
