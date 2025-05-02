@@ -1,4 +1,4 @@
-import { loginUser } from '@/api/AuthApi';
+import { getCurrentUser, loginUser } from '@/api/AuthApi';
 import { createContext, useContext, useState } from 'react';
 
 //dev_5_Fruit
@@ -22,14 +22,34 @@ export const AuthProvider = ({ children }) => {
       setAccessToken(access);
 
       //로그인이 된후 로그인 정보를 받아서 어디서든 로그인 정보를 공유 할수 있게 함
-      //await getUser()
+      await getUser();
     } catch (error) {
       console.error('로그인 실패', error);
       throw error;
     }
   };
 
+  const getUser = async () => {
+    try {
+      const response = await getCurrentUser();
+      setUser(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('사용자 정보 받아오기 실패', error);
+      logout();
+    }
+  };
+
+  //로그아웃시 로컬에 저장된 access 토큰과 refresh 토큰을 삭제만 하면됨
+  const logout = () => {
+    setUser(null);
+    setAccessToken(null);
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+  };
+
   const value = {
+    logout,
     login,
     accessToken,
     user,

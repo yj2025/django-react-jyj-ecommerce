@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import heroImg1 from '@/assets/fruits/img/hero-img-1.png';
 import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg';
+import { useAuth } from '@/contexts/AuthContext';
 
 //dev_2_fruit
 const Header = () => {
-  // dev_5_Fruit
+  //dev_5_Fruit
   const { user, logout } = useAuth();
   console.log(user);
 
