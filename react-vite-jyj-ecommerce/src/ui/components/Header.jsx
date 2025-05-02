@@ -4,6 +4,10 @@ import heroImg2 from '@/assets/fruits/img/hero-img-2.jpg';
 
 //dev_2_fruit
 const Header = () => {
+  // dev_5_Fruit
+  const { user, logout } = useAuth();
+  console.log(user);
+
   return (
     <>
       {/* Spinner Start */}
