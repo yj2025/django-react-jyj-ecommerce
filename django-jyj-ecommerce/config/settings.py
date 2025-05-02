@@ -277,3 +277,4 @@ DJOSER = {
     },
     "CREATE_SESSION_ON_LOGIN": True,  # 로그인하면 세션도 생성됨
 }
+
