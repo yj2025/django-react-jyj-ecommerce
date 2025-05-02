@@ -1,7 +1,29 @@
+import { useState } from 'react';
 import '/src/assets/login/css/login.css';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 //dev_5_Fruit
 const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const auth = useAuth();
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      await login(username, password);
+      alert('✅ 로그인 성공');
+      //로그인 성공후 루트로 이동
+      navigate('/'); //windows.location.href = "/"
+    } catch (error) {
+      alert('로그인 실패 입니다.' + error.message);
+    }
+  };
+
   return (
     <div className="form-bg">
       <div className="container">
@@ -14,13 +36,13 @@ const Login = () => {
               <h3 className="title">Login</h3>
               <form className="form-horizontal">
                 <div className="form-group">
-                  <label>email</label>
+                  <label>username</label>
                   <input
                     className="form-control"
-                    type="email"
-                    placeholder="email address"
-                    // value={email}
-                    // onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    placeholder="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
@@ -29,11 +51,11 @@ const Login = () => {
                     className="form-control"
                     type="password"
                     placeholder="password"
-                    // value={password}
-                    // onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button type="button" className="btn btn-default">
+                <button type="button" className="btn btn-default" onClick={handleLogin}>
                   Login
                 </button>
               </form>
