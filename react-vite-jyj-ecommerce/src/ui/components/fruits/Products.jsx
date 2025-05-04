@@ -12,6 +12,7 @@ const Products = () => {
      
     
     useEffect(()=>{
+        console.log('useEffect 실행됨!'); // 테스트 코드
         //카테고리 가져오기
         getCategories()
             .then((res)=>{

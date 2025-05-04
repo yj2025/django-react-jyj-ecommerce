@@ -10,8 +10,8 @@ urlpatterns = [
     path("cart/", include("cart.urls")),  # dev_15
     path("orders/", include("orders.urls")),  # dev_24
     path("payment/", include("payment.urls")),  # dev_26
-    path("accounts/", include("allauth.urls")),  # dev_27 소셜로그인
-    path("api/", include("api.urls")),  # dev_28 
+    path("accounts/", include("allauth.urls")),  # # dev_27 소셜로그인
+    path("api/", include("api.urls")),  # dev_28    
 ]
 
 # dev_2

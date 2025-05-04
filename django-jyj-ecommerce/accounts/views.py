@@ -48,10 +48,14 @@ def login_user(request):
                 # loop
                 for product_id, data in converted_cart.items():
                     quantity = data["quantity"]
-                    print("상품 ID:", product_id)  # 1
-                    print("수량:", quantity)  # 5
-                    product = Product.objects.get(id=product_id)
-                    cart.add(product, quantity)
+                    print("상품 ID:", product_id)
+                    print("수량:", quantity)
+                    try:
+                        product = Product.objects.get(id=product_id)
+                        cart.add(product, quantity)
+                    except Product.DoesNotExist:
+                        print(f"상품 ID {product_id}가 존재하지 않습니다. 건너뜁니다.")
+                        continue
 
             messages.success(request, "You Have been logged in")
             return redirect("/")
