@@ -2,8 +2,9 @@ from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from djoser.serializers import UserSerializer as BaseUserSerializer
 from .models import User
 
+
 # dev_5_Fruit
-# djoser 회원가입, User 정보 customizing
+# 도져 회원가입 및 User 정보 커스텀 마이징
 class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
@@ -14,7 +15,7 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             "password",
             "gender",
             "job",
-            "old_cart",
+            #   "old_cart",
         )
 
 class UserSerializer(BaseUserSerializer):
@@ -30,3 +31,4 @@ class UserSerializer(BaseUserSerializer):
             "creatd_at",
             "updated_at",
         )
+

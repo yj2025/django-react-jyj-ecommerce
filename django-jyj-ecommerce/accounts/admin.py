@@ -48,3 +48,4 @@ class UserAccountsAdmin(admin.ModelAdmin):
 #         "job",
 #         "gender",
 #     ]
+
