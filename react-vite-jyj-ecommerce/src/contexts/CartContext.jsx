@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
-import { mergeCart } from "@/api/CartApi";
+import { getCarts, mergeCart } from "@/api/CartApi";
 
 //dev_6_Fruits
 const CartContext = createContext();
@@ -31,10 +31,12 @@ export const CartProvider = ({ children }) => {
             try {
                 
                 if(Object.keys(guestCart).length > 0 ){
-
                     await mergeCart(localStorage.getItem("cart"))
-                    localStorage.removeItem("cart");
+                    localStorage.removeItem("cart");                    
                 }
+
+                //병합 작업이 끝난후 서버에서 카트를 다시 로드함
+                loadCart()
                 
             } catch (error) {
                 console.error("장바구니 병합/불러오기 실패", error);
@@ -44,6 +46,30 @@ export const CartProvider = ({ children }) => {
     fetchCart()
   },[user])
   
+  //장바구니 불러오기
+  const loadCart = async () => {
+    try {
+        const response = await getCarts();
+
+        console.log("카트=========")
+        console.log(response)
+        // 서버 응답: 배열일 경우 변환
+        const cartData = {};
+        response.data.cart.forEach((item) => {
+            cartData[item.product.id] = {
+            quantity: item.quantity,
+            price: item.price,
+            };
+        });
+
+        setCartItems(cartData);
+
+    } catch (error) {
+        console.error("❌ 장바구니 불러오기 실패", error);
+    }
+  }
+
+
   const getTotalItems = ()=>{
       return Object.values(cartItems).reduce((acc, item) => acc + item.quantity, 0);
   }
