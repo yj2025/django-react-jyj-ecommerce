@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 
 # dev_28
 # from api.views import hello_world, hello_world_json, hello_world_drf
-from .views import base_views, product_views, category_views
+from .views import base_views, product_views, category_views, cart_views
 
 app_name = "api"
 
@@ -70,6 +70,8 @@ urlpatterns = [
     # dev_5_Fruit
     path("auth/", include("djoser.urls")), # 회원가입, 비밀번호 변경 등
     path("auth/", include("djoser.urls.jwt")),  # JWT 로그인/로그아웃, 토큰 갱신 등   
+    # dev_6_Fruit
+    path("cart/merge", cart_views.CartMergeAPIView.as_view()),
 ]
 
 # 2. 생성되는 URL
