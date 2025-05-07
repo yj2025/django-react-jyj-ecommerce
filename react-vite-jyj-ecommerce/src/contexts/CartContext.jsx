@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 
-
+//dev_6_Fruits
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
@@ -17,6 +17,10 @@ export const CartProvider = ({ children }) => {
     }
   }, [cartItems, user]);
 
+  
+  const getTotalItems = ()=>{
+      return Object.values(cartItems).reduce((acc, item) => acc + item.quantity, 0);
+  }
   
   // 장바구니 추가
   const addToCart = async (product, quantity = 1) => {
@@ -43,12 +47,13 @@ export const CartProvider = ({ children }) => {
       });
     }
   };
-  
+
   return (
     <CartContext.Provider
       value={{
         cartItems,
         addToCart,
+        getTotalItems,
       }}
     >
       {children}
