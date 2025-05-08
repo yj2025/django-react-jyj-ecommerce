@@ -4,7 +4,10 @@ import { getCarts, mergeCart } from "@/api/CartApi";
 
 //dev_6_Fruits
 const CartContext = createContext();
-
+// {
+//    "33": {"quantity": 1, "price": "10000.00"},
+//    "34": {"quantity": 1, "price": "12000.00"},
+// }
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const { user } = useAuth();
@@ -86,7 +89,8 @@ export const CartProvider = ({ children }) => {
         console.error("서버 장바구니 추가 실패", err);
       }
     } else {
-        setCartItems((prev) => {
+      
+      setCartItems((prev) => {
         const existing = prev[productId];
         return {
           ...prev,
