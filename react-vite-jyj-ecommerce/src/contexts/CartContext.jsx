@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
-import { getCarts, mergeCart } from "@/api/CartApi";
+import { addCart, deleteCart, getCarts, mergeCart } from "@/api/CartApi";
 
 //dev_6_Fruits
 const CartContext = createContext();
@@ -88,9 +88,14 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product, quantity = 1) => {
     const productId = product.id;
     const price = product.price;
-
+    //dev_7_Fruit
     if (user) {
       try {
+
+        const response = await addCart(product.id , quantity)
+        console.log(response)
+        
+        loadCart() 
         
       } catch (err) {
         console.error("서버 장바구니 추가 실패", err);
@@ -114,9 +119,26 @@ export const CartProvider = ({ children }) => {
     }
   };
 
+  //dev_7_Fruit
+  //항목 제거
+  const removeFromCart = async (productId) => {
+    
+    if(user){
+      try {
+        await deleteCart(productId);        
+        await loadCart();
+        console.log("✅ 상품이 장바구니에서 제거되었습니다.");
+      } catch (error) {
+        console.error("서버 장바구니 삭제 실패", error);
+      }
+    }
+
+  }
+
   return (
     <CartContext.Provider
       value={{
+        removeFromCart, //dev_7_Fruit
         userCart, //dev_7_Fruit
         cartItems,
         addToCart,

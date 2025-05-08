@@ -53,6 +53,7 @@ return (
             </tr>
           </thead>
           <tbody>
+            { userCart && userCart.cart.map() }
             <tr>
               <th scope="row">
                 <div className="d-flex align-items-center">
