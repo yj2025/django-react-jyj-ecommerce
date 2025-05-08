@@ -1,11 +1,25 @@
 import { getCategories } from "@/api/CategoryApi"
 import { getProducts } from "@/api/ProductApi"
+import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/contexts/CartContext"
 import { useEffect, useState } from "react"
-
-
+import { Link, useNavigate } from 'react-router-dom';
+//dev_7_Fruit
 const Cart = () => {
 
+const {userCart,addToCart,removeFromCart} = useCart()
+
+const {user} = useAuth() //유저 상태
+const navigate = useNavigate();
+
+// 로그인 여부 확인 후 미로그인 시 리디렉션
+//[user, navigate]는
+//이 배열 안에 있는 값 중 하나라도 바뀌면, useEffect 안의 콜백 함수가 다시 실행  
+useEffect(()=>{
+  if(!user){
+    navigate("/login")
+  }
+},[user])  
    
 return (
 <>
@@ -235,8 +249,7 @@ return (
     </div>
   </div>
   {/* Cart Page End */}
-</>
-)
+</>)
 }
 
 export default Cart

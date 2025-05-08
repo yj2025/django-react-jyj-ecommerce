@@ -11,7 +11,9 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const { user } = useAuth();
-
+  
+  //dev_7_Fruit
+  const [userCart,setUserCart] = useState(null);
 
   // 비회원일 때 localStorage 저장
   useEffect(() => {
@@ -66,6 +68,11 @@ export const CartProvider = ({ children }) => {
         });
 
         setCartItems(cartData);
+        
+        //dev_7_Fruit
+        if(user){
+          setUserCart(response.data)
+        }
 
     } catch (error) {
         console.error("❌ 장바구니 불러오기 실패", error);
@@ -110,6 +117,7 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       value={{
+        userCart, //dev_7_Fruit
         cartItems,
         addToCart,
         getTotalItems,
