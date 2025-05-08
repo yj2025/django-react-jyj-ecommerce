@@ -1,3 +1,4 @@
+import Cart from '@/ui/components/fruits/Cart';
 import Products from '@/ui/components/fruits/products';
 import Login from '@/ui/components/login/Login';
 import MainLayout from '@/ui/layouts/MainLayout';
@@ -19,6 +20,12 @@ const routes = [
         path: 'login',
         element: <Login></Login>,
         loader: () => '상품들',
+      },
+      {
+      //dev_7_Fruit
+        path: 'cart',
+        element: <Cart></Cart>,
+        loader: () => '카트',
       },
     ],
   },
