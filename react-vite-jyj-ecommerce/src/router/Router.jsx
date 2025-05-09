@@ -27,6 +27,11 @@ const routes = [
                 element:<Cart></Cart>,
                 loader: () => '카트',
             },             
+            {  //dev_8_Fruit
+                path:'checkout',
+                element:<CheckOut></CheckOut>,
+                loader: () => '체크아웃',
+            },             
         ]    
     }
 ]
