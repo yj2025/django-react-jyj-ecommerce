@@ -27,6 +27,26 @@ const handleChange = (event) => {
   setShippingData((prev) => ({ ...prev, [name]: value }))
 }
 
+const navigate = useNavigate()
+
+const handlePayment = async () => {
+
+  try {
+    const result = await RequestPay(shippingData,userCart)
+    
+    if(result){
+      console.log("====결재 완료====")
+      //clearCart() //장바구니 비우기
+      navigate("/") //루트로 이동
+    }
+    
+  } catch (error) {
+    console.error("결재 실패:", error)
+  }
+
+}
+
+
 return (
   <>
   <div className="container-fluid page-header py-5">
@@ -323,11 +343,13 @@ return (
               </div>
             </div>
             <div className="row g-4 text-center align-items-center justify-content-center pt-4">
+              {/* dev_8_2_Fruit */}
               <button
                 type="button"
+                onClick={handlePayment}
                 className="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary"
               >
-                Place Order
+                카카오페이
               </button>
             </div>
           </div>
