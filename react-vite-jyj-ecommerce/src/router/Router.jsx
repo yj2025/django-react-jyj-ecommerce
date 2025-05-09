@@ -1,4 +1,5 @@
 import Cart from '@/ui/components/fruits/Cart'
+import CheckOut from '@/ui/components/fruits/CheckOut'
 import Products from '@/ui/components/fruits/products'
 import Hero from '@/ui/components/Hero'
 import Login from '@/ui/components/login/Login'
@@ -14,7 +15,7 @@ const routes = [
         children:[
             {
                 path:'',
-                element: <div><Hero/><Products/></div>,
+                element:<div><Hero/><Products/></div>,
                 loader: () => '상품들',
             },
             {  //dev_5_Fruit
@@ -26,12 +27,12 @@ const routes = [
                 path:'cart',
                 element:<Cart></Cart>,
                 loader: () => '카트',
-            },             
+            },            
             {  //dev_8_Fruit
                 path:'checkout',
                 element:<CheckOut></CheckOut>,
                 loader: () => '체크아웃',
-            },             
+            },               
         ]    
     }
 ]
