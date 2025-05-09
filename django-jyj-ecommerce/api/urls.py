@@ -24,6 +24,14 @@ category_detail = category_views.CategoryViewSet.as_view(
     {"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}
 )
 
+#dev_8_2_Fruit
+# GET /api/payments/ – 전체 결제 내역
+# POST /api/payments/ – 결제 내역 생성
+# GET /api/payments/<id>/ – 단일 결제 조회
+# PUT/PATCH /api/payments/<id>/ – 수정
+# DELETE /api/payments/<id>/ – 삭제
+from api.views.payment_views import PaymentViewSet
+router.register("payments",PaymentViewSet)
 
 urlpatterns = [
     # path("hello-world/", base_views.hello_world),
