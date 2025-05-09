@@ -5,6 +5,7 @@ import { useCart } from "@/contexts/CartContext"
 import { formatCurrency, formatCurrencyWithWon } from "@/utils/format"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from 'react-router-dom';
+import RequestPay from "../payment/RequestPay"
 
 //dev_8_Fruit
 const CheckOut = () => {
@@ -35,6 +36,7 @@ const handlePayment = async () => {
     const result = await RequestPay(shippingData,userCart)
     
     if(result){
+      alert("✅ 결재 및 주문이 성공적으로 완료 되었습니다.")
       console.log("====결재 완료====")
       //clearCart() //장바구니 비우기
       navigate("/") //루트로 이동
