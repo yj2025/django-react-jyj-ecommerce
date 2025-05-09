@@ -15,7 +15,7 @@ const Products = () => {
     const {addToCart} = useCart()
     
     useEffect(()=>{
-        //카테고리 가져오기
+        //카테고리 가져오기7
         getCategories()
             .then((res)=>{
                 console.log(res)

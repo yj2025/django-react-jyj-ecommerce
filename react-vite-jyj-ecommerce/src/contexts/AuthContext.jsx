@@ -50,6 +50,9 @@ export const AuthProvider = ({children}) =>{
         setAccessToken(null);
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
+        
+        // dev_7_Fruit
+        localStorage.removeItem("cart");
     }
 
 

@@ -2,12 +2,26 @@ import { getCategories } from "@/api/CategoryApi"
 import { getProducts } from "@/api/ProductApi"
 import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/contexts/CartContext"
+import { formatCurrency, formatCurrencyWithWon } from "@/utils/format"
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from 'react-router-dom';
 //dev_7_Fruit
+// {
+//   "cart": [
+//     {
+//       "product": {...},
+//       "quantity": 2,
+//       "price": "15000.00",
+//       "total_price": "30000.00"
+//     },
+//     ...
+//   ],
+//   "cart_total_items": 5,
+//   "cart_total_price": "78000.00"
+// }
 const Cart = () => {
 
-const {userCart,addToCart,removeFromCart} = useCart()
+const {userCart,addToCart, removeFromCart} = useCart()
 
 const {user} = useAuth() //유저 상태
 const navigate = useNavigate();
@@ -20,7 +34,24 @@ useEffect(()=>{
     navigate("/login")
   }
 },[user])  
-   
+
+const handleRemoveItem = (product) => {
+  removeFromCart(product.id)
+}
+
+const handleIncrease = (item) => {
+  addToCart(item.product,1)
+}
+
+const handleDecrease = (item) => {
+  
+  if(item.quantity > 1)
+    addToCart(item.product, -1)
+  else if (item.quantity == 1)
+    handleRemoveItem(item.product)
+}
+
+
 return (
 <>
   {/* Single Page Header start */}
@@ -53,12 +84,13 @@ return (
             </tr>
           </thead>
           <tbody>
-            { userCart && userCart.cart.map() }
-            <tr>
+            { userCart && userCart.cart.map((item,index ) => (
+                  
+             <tr key={index}>
               <th scope="row">
                 <div className="d-flex align-items-center">
                   <img
-                    src="img/vegetable-item-3.png"
+                    src={`http://127.0.0.1:8000/${item.product.image}`}
                     className="img-fluid me-5 rounded-circle"
                     style={{ width: 80, height: 80 }}
                     alt=""
@@ -66,58 +98,10 @@ return (
                 </div>
               </th>
               <td>
-                <p className="mb-0 mt-4">Big Banana</p>
+                <p className="mb-0 mt-4">{item.product.name}</p>
               </td>
               <td>
-                <p className="mb-0 mt-4">2.99 $</p>
-              </td>
-              <td>
-                <div
-                  className="input-group quantity mt-4"
-                  style={{ width: 100 }}
-                >
-                  <div className="input-group-btn">
-                    <button className="btn btn-sm btn-minus rounded-circle bg-light border">
-                      <i className="fa fa-minus" />
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control form-control-sm text-center border-0"
-                    defaultValue={1}
-                  />
-                  <div className="input-group-btn">
-                    <button className="btn btn-sm btn-plus rounded-circle bg-light border">
-                      <i className="fa fa-plus" />
-                    </button>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p className="mb-0 mt-4">2.99 $</p>
-              </td>
-              <td>
-                <button className="btn btn-md rounded-circle bg-light border mt-4">
-                  <i className="fa fa-times text-danger" />
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">
-                <div className="d-flex align-items-center">
-                  <img
-                    src="img/vegetable-item-5.jpg"
-                    className="img-fluid me-5 rounded-circle"
-                    style={{ width: 80, height: 80 }}
-                    alt=""
-                  />
-                </div>
-              </th>
-              <td>
-                <p className="mb-0 mt-4">Potatoes</p>
-              </td>
-              <td>
-                <p className="mb-0 mt-4">2.99 $</p>
+                <p className="mb-0 mt-4">{Math.floor(item.price)} 원</p>
               </td>
               <td>
                 <div
@@ -125,79 +109,33 @@ return (
                   style={{ width: 100 }}
                 >
                   <div className="input-group-btn">
-                    <button className="btn btn-sm btn-minus rounded-circle bg-light border">
+                    <button onClick={()=>handleDecrease(item)} className="btn btn-sm btn-minus rounded-circle bg-light border">
                       <i className="fa fa-minus" />
                     </button>
                   </div>
                   <input
                     type="text"
                     className="form-control form-control-sm text-center border-0"
-                    defaultValue={1}
+                    value={item.quantity}
                   />
                   <div className="input-group-btn">
-                    <button className="btn btn-sm btn-plus rounded-circle bg-light border">
+                    <button onClick={()=>handleIncrease(item)} className="btn btn-sm btn-plus rounded-circle bg-light border">
                       <i className="fa fa-plus" />
                     </button>
                   </div>
                 </div>
               </td>
               <td>
-                <p className="mb-0 mt-4">2.99 $</p>
+                <p className="mb-0 mt-4">{formatCurrencyWithWon(Math.floor(item.total_price))}</p>
               </td>
               <td>
-                <button className="btn btn-md rounded-circle bg-light border mt-4">
+                <button onClick={ () => handleRemoveItem(item.product) } className="btn btn-md rounded-circle bg-light border mt-4">
                   <i className="fa fa-times text-danger" />
                 </button>
               </td>
             </tr>
-            <tr>
-              <th scope="row">
-                <div className="d-flex align-items-center">
-                  <img
-                    src="img/vegetable-item-2.jpg"
-                    className="img-fluid me-5 rounded-circle"
-                    style={{ width: 80, height: 80 }}
-                    alt=""
-                  />
-                </div>
-              </th>
-              <td>
-                <p className="mb-0 mt-4">Awesome Brocoli</p>
-              </td>
-              <td>
-                <p className="mb-0 mt-4">2.99 $</p>
-              </td>
-              <td>
-                <div
-                  className="input-group quantity mt-4"
-                  style={{ width: 100 }}
-                >
-                  <div className="input-group-btn">
-                    <button className="btn btn-sm btn-minus rounded-circle bg-light border">
-                      <i className="fa fa-minus" />
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control form-control-sm text-center border-0"
-                    defaultValue={1}
-                  />
-                  <div className="input-group-btn">
-                    <button className="btn btn-sm btn-plus rounded-circle bg-light border">
-                      <i className="fa fa-plus" />
-                    </button>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p className="mb-0 mt-4">2.99 $</p>
-              </td>
-              <td>
-                <button className="btn btn-md rounded-circle bg-light border mt-4">
-                  <i className="fa fa-times text-danger" />
-                </button>
-              </td>
-            </tr>
+           ))}
+
           </tbody>
         </table>
       </div>
@@ -236,7 +174,7 @@ return (
             </div>
             <div className="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
               <h5 className="mb-0 ps-4 me-4">Total</h5>
-              <p className="mb-0 pe-4">$99.00</p>
+              <p className="mb-0 pe-4">{userCart && formatCurrencyWithWon(userCart.cart_total_price)}</p>
             </div>
             <button
               className="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
