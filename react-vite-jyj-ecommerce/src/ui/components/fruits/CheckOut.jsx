@@ -38,7 +38,7 @@ const handlePayment = async () => {
     if(result){
       alert("✅ 결재 및 주문이 성공적으로 완료 되었습니다.")
       console.log("====결재 완료====")
-      //clearCart() //장바구니 비우기
+      clearCart() //장바구니 비우기
       navigate("/") //루트로 이동
     }
     

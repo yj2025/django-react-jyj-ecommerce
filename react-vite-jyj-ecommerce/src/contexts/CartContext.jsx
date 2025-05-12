@@ -135,6 +135,24 @@ export const CartProvider = ({ children }) => {
 
   }
 
+  // 카트 전체 비우기
+  const clearCart = async () => {
+    if(user){
+
+      try {
+        await deleteCart()
+        setCartItems({})
+
+      } catch (error) {
+        console.err("서버 장바구니 비우기 실패", error)
+      }
+
+    }else{
+      setCartItems({})
+      localStorage.removeItem("cart")
+    }
+  }
+  
   return (
     <CartContext.Provider
       value={{
@@ -143,6 +161,7 @@ export const CartProvider = ({ children }) => {
         cartItems,
         addToCart,
         getTotalItems,
+        clearCart
       }}
     >
       {children}
