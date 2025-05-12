@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import '/src/assets/login/css/login.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -25,7 +25,35 @@ const Login = () => {
             alert("로그인 실패 입니다." + error.message)
         }
     }
+    
 
+    //dev_9_1_Fruit
+    useEffect(() => {        
+        // Kakao SDK 초기화        
+        if (window.Kakao && !window.Kakao.isInitialized()) {
+            window.Kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY) 
+        }
+    }, [])
+    
+    const handleKakaoLogin = ()=>{
+        
+        if(!window.Kakao){
+            console.log("카카오 모듈이 없습니다 ...")
+            return
+        }
+        
+        //카카오 인증
+        window.Kakao.Auth.login({
+            scope: 'profile_nickname, account_email, gender', // 원하는 scope
+            success: async function (authObj) {
+                const kakaoAccessToken = authObj.access_token
+                
+                console.log('Kakao Access Token:', kakaoAccessToken)
+
+            }
+        })
+
+    }
 
     return (
         <div className="form-bg">
@@ -33,7 +61,8 @@ const Login = () => {
             <div className="row justify-content-center">
                 <div className="col-md-4 col-md-offset-4">
                     <div className="form-container">
-                    <div className="form-icon">
+                    {/* dev_9_1_Fruit */}
+                    <div className="form-icon" onClick={handleKakaoLogin}>
                         <i className="fa fa-user" />
                     </div>
                     <h3 className="title">Login</h3>
