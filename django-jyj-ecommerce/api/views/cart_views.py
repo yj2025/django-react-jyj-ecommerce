@@ -1,4 +1,3 @@
-
 from rest_framework.views import APIView
 # ✅ 카트 API endpoint 예시:
 # HTTP       Method	       Endpoint	 기능
@@ -76,10 +75,7 @@ class CartAPIView(APIView):
             return  Response({"message": "상품이 장바구니에서 추가되었습니다."}) 
         
         except Product.DoesNotExist:
-                return Response({"error": "상품이 존재하지 않습니다."}, status=404)
-
-
-         
+                return Response({"error": "상품이 존재하지 않습니다."}, status=404)         
     
     def put(self,request):
         pass
