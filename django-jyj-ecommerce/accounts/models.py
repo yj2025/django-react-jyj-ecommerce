@@ -29,7 +29,7 @@ class User(AbstractUser):
 
     job = models.CharField(verbose_name="직업", max_length=1, choices=JOBS)
 
-    creatd_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     # dev_23
