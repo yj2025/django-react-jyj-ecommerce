@@ -84,3 +84,31 @@ def product_api(request, pk):
     elif request.method == "DELETE":
         product.delete()
         return Response("SUCCESS", status=status.HTTP_204_NO_CONTENT)
+    
+# dev_10_Fruit
+# 페이지네이션 클래스 (옵션)
+# 요청 예시
+# /api/product-list/?page=2    페이지 2
+# /api/product-list/?search=포도    '포도' 포함 검색
+# /api/product-list/?category=4    카테고리 ID가 4번인 상품 필터링
+# /api/product-list/?ordering=price    가격 오름차순 정렬
+# /api/product-list/?ordering=-id    최신순 정렬
+from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
+
+#http://127.0.0.1:8000/api/product-list/?page_size=5
+#http://127.0.0.1:8000/api/product-list/?/api/products/?page=3&page_size=25
+class ProductPagination(PageNumberPagination):
+    page_size = 10 # 기본 페이지 크기
+    page_size_query_param = "page_size"  # 클라이언트가 지정할 수 있는 파라미터
+    max_page_size = 100  # 최대 페이지 크기 제한
+
+
+# ModelViewSet
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    pagination_class = ProductPagination
+
+    # 정렬/검색
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]

@@ -248,11 +248,13 @@ SOCIALACCOUNT_PROVIDERS = {
 #토큰에서 사용자 ID를 추출하고, 해당 사용자를 DB에서 가져옴
 #해당 사용자를 request.user에 할당
 #DRF에서 모든 API 뷰가 사용할 기본 인증 클래스들을 지정 
-    
+   
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        #"rest_framework_simplejwt.authentication.JWTAuthentication",
-        "dj_rest_auth.jwt_auth.JWTCookieAuthentication", #dev_9_2_Fruit
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',  # dev_9_2_Fruit
     ),
 }
 
@@ -263,6 +265,8 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+
 
 # 도져(djoser) 커스텀마이징 세팅
 DJOSER = {
