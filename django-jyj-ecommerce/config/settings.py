@@ -296,9 +296,11 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": True, #dev_9_2_Fruit
     'JWT_AUTH_REFRESH_COOKIE' : "refresh_token", #dev_9_2_Fruit
-    #'JWT_AUTH_COOKIE_USE_CSRF' : True, #dev_9_2_Fruit
     'SESSION_LOGIN' :False, #dev_9_2_Fruit 
-    #'JWT_AUTH_SAMESITE': 'None',#dev_9_2_Fruit 
+    'JWT_AUTH_SAMESITE': 'Lax',#dev_9_2_Fruit 
+    'JWT_AUTH_COOKIE_USE_CSRF' : False, #dev_9_2_Fruit
+    #시리얼라이져 세팅
+    'USER_DETAILS_SERIALIZER': "accounts.serializers.UserResAuthSerializer",
 }
 
 # dev_9_2_Fruit

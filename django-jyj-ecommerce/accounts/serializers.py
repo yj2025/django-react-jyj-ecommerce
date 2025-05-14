@@ -1,5 +1,6 @@
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from djoser.serializers import UserSerializer as BaseUserSerializer
+from yaml import serialize
 from .models import User
 
 
@@ -32,3 +33,18 @@ class UserSerializer(BaseUserSerializer):
             "updated_at",
         )
 
+# dev_9_2_Fruit
+from rest_framework import serializers
+class UserRestAuthSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "email",
+            "gender",
+            "job",
+            "old_cart",
+            "created_at",
+            "updated_at",
+        )
