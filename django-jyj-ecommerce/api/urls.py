@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 
 # dev_28
 # from api.views import hello_world, hello_world_json, hello_world_drf
-from .views import base_views, product_views, category_views,cart_views, social_views
+from .views import base_views, product_views, category_views,cart_views,social_views
 
 app_name = "api"
 
@@ -35,7 +35,7 @@ router.register("payments",PaymentViewSet)
 
 # dev_10_Fruit
 from api.views.product_views import ProductViewSet
-router.register("product-list", ProductViewSet)
+router.register("product-list",ProductViewSet)
 
 urlpatterns = [
     # path("hello-world/", base_views.hello_world),
