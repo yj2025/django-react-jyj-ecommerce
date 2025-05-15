@@ -10,12 +10,11 @@ createRoot(document.getElementById('root')).render(
   //dev_5_Fruit
   //dev_6_Fruit
   //dev_10_Fruit
-
   <AuthProvider>
     <ShopProvider>
       <CartProvider>    
         <RouterProvider router={router}/>
-      </CartProvider>   
-    </ShopProvider>
+      </CartProvider> 
+    </ShopProvider>  
  </AuthProvider>
 )

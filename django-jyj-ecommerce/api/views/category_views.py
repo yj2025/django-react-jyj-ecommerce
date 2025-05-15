@@ -54,7 +54,7 @@ class CategoriesAPI(APIView):
 class CategoryAPI(APIView):
 
     def get(self, request, pk):
-        category = _or_404(Category, id=pk)
+        category = get_object_or_404(Category, id=pk)
         serializer = CategorySimpleSerializer(category)
         return Response(serializer.data)
 
@@ -186,10 +186,10 @@ class CategoryGenericView(RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
 
         instance = self.get_object()
-        print(f"수정 카테고리 이름 {instance.name} -> {request.data.get('name')}")
+        print(f"수정 카테고리 이름 {instance.name} -> {request.data.get("name")}")
         respose = super().update(request, *args, **kwargs)  # update 쿼리 날아감
         respose.data = {
-            "message": f"수정 카테고리 이름 {instance.name} -> {request.data.get('name')}",
+            "message": f"수정 카테고리 이름 {instance.name} -> {request.data.get("name")}",
             "category": respose.data,
         }
 
@@ -250,4 +250,6 @@ from rest_framework import filters
 #dev_3_Fruit
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
-    serializer_class = CategorySimpleSerializer
+    #serializer_class = CategorySimpleSerializer
+    #dev_10_Fruit
+    serializer_class = CategorySerializer

@@ -1,34 +1,71 @@
-import { createContext, useContext, useState, useEffect } from "react"
+import { getProducts, getProductsPaging } from "@/api/ProductApi"
+import { createContext, useContext, useEffect, useState } from "react"
 
+  //dev_10_Fruit
 const ShopContext = createContext()
 
 export const useShop = () => useContext(ShopContext)
 
-export const ShopProvider = ({ children }) => {
-    const [products, setProducts] = useState([])
-    const [search, setSearch] = useState("")
-    const [currentPage, setCurrentPage] = useState(1)
+export const ShopProvider = ({children}) => {
 
-    // 상품 목록 호출 함수
-    const fetchProducts = async () => {
-        try {
-            // 예시: API 요청
-            const response = await fetch(`/api/products?page=${currentPage}&search=${search}`)
-            const data = await response.json()
-            setProducts(data.results)
-        } catch (error) {
-            console.error("상품 목록을 불러오는 중 오류 발생:", error)
-        }
+  const [currentPage,setCurrentPage] = useState(1)
+  const [products,setProducts] = useState([])
+  const [search,setSearch] = useState("")
+  const [ordering,setOdering] = useState("")
+  
+
+
+  // {
+  //   "count": 21,
+  //   "next": "http://127.0.0.1:8000/api/product-list/?ordering=-price&page=2",
+  //   "previous": null,
+  //   "results": [
+  //       {
+  //           "id": 8,
+  //           "category": {
+  //               "id": 4,
+  //               "name": "도서"
+  //           },
+  //           "name": "역사",
+  //           "price": "199.94",
+  //           "description": "역사는(은) 도서 카테고리에 속하는 상품입니다.",
+  //           "image": "http://127.0.0.1:8000/media/upload/product/%EC%97%AD%EC%82%AC_rpRPjCl.jpg",
+  //           "is_sale": false,
+  //           "sale_price": null
+  //       },
+
+  //상품 목록 호출
+  const fetchProducsts = async () =>{
+    
+    try {
+      const resonse = await getProductsPaging({
+        page : currentPage,
+        search,
+        ordering,
+      })
+      console.log(resonse.data)
+      setProducts(resonse.data.results);
+    
+    } catch (error) {
+      console.error("상품 목록을 불러오는 중 오류 발생:", error);
     }
+  }
 
-    // 컴포넌트 처음 마운트될 때 한 번 호출
-    useEffect(() => {
-        fetchProducts()
-    }, [search, currentPage])
+  //조건이 변경될때 마다 API 다시 호출
+  useEffect(()=>{
+      fetchProducsts()
+  },[currentPage,search,ordering])
 
-    return (
-        <ShopContext.Provider value={{ products, search, setSearch, currentPage, setCurrentPage }}>
-            {children}
-        </ShopContext.Provider>
-    )
+  const value = {
+    search,
+    setSearch,
+    currentPage,
+    setCurrentPage,
+    products,
+    setProducts,
+    ordering,
+    setOdering,
+  }
+
+  return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>
 }

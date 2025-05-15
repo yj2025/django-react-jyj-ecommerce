@@ -9,17 +9,22 @@ import http from './HttpCommon';
 // # PUT  product/{id}       modify product
 // # DELETE  product/{id}    delete product
 export const getProducts = () => {
-  return http.get('/api/products/');
-};
+    return http.get('/api/products/')
+}
 
 export const getProductsPaging = ({
-  page = 1,
-  search = ""
+    page = 1,
+    search = "",
+    ordering = "",
+    page_size = 12 
 }) => {
 
-  const params = {
-    search
-  }
-
-  return http.get('/api/product-list/',{params});
-};
+    const params = {
+        page, 
+        search,
+        ordering,
+        page_size
+    }
+    //api/product-list/?page=1&search=컴퓨터&ordering=-id
+    return http.get("/api/product-list/",{params})
+}
