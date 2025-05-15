@@ -13,6 +13,7 @@ export const getProducts = () => {
 };
 
 export const getProductsPaging = ({
+  page = 1,
   search = ""
 }) => {
 
