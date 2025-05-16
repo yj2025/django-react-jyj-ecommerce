@@ -16,7 +16,7 @@ export const getProductsPaging = ({
     page = 1,
     search = "",
     ordering = "",
-    category = "",
+    category ="",
     page_size = 12 
 }) => {
 
@@ -27,6 +27,10 @@ export const getProductsPaging = ({
         category,
         page_size
     }
-    //api/product-list/?page=1&search=컴퓨터&ordering=-id
+    //api/product-list/?page=1&search=컴퓨터&ordering=-id&category=1
     return http.get("/api/product-list/",{params})
+}
+
+export const getProductMaxPrice = ()=>{
+    return http.get(`/api/product-list/max-price/`)
 }

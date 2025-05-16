@@ -42,6 +42,8 @@ export const ShopProvider = ({children}) => {
   //       },
 
   //상품 목록 호출
+  
+
   const fetchProducsts = async () =>{
     
     try {

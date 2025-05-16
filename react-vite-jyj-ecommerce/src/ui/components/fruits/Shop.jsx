@@ -4,6 +4,7 @@ import { useShop } from "@/contexts/ShopContext"
 import { useEffect, useState } from "react"
 import Pagination from 'react-js-pagination'
 import '@/assets/paging/css/paging.css'
+import { getProductMaxPrice } from "@/api/ProductApi"
 //dev_10_Fruit
 const Shop = () => {
 
@@ -49,11 +50,57 @@ const handlePageChange = (pageNumber) => {
   setCurrentPage(pageNumber)
 
   //스크롤 맨 위로 이동
-  window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-  });
+  // window.scrollTo({
+  //       top: 0,
+  //       behavior: 'smooth',
+  // });
 
+}
+
+                    // <input
+                    //   type="range"
+                    //   className="form-range w-100"
+                    //   id="rangeInput"
+                    //   name="rangeInput"
+                    //   min={0}
+                    //   max={limitPrice}
+                    //   defaultValue={0}
+                    //   onChange={handlePriceChange}
+                    //   oninput="amount.value=rangeInput.value"
+                    // />
+                    // <output
+                    //   id="amount"
+                    //   name="amount"
+                    //   min-velue={0}
+                    //   max-value={limitPrice}
+                    //   htmlFor="rangeInput"
+                    // >
+                    //   {price}
+                    // </output>
+const [price,setPrice] = useState(0)
+const [limitPrice,setLimitPrice] = useState(0)
+
+useEffect(()=>{
+
+  const fetchMaxPrice = async ()=>{
+    try { 
+      const response = await getProductMaxPrice();
+      const maxPrice = response.data.max_price;
+      setLimitPrice(maxPrice)
+      
+    } catch (error) {
+       console.error("최대 가격을 가져오는 중 오류 발생:", error);
+    }
+  }
+
+  fetchMaxPrice()
+},[limitPrice])
+
+//슬라이더 값 변경 처리
+const handlePriceChange = (e) => {
+  const value = parseFloat(e.target.value)
+
+  setPrice(value) 
 }
 
 
@@ -149,18 +196,19 @@ return (
                       id="rangeInput"
                       name="rangeInput"
                       min={0}
-                      max={500}
+                      max={limitPrice}
                       defaultValue={0}
+                      onChange={handlePriceChange}
                       oninput="amount.value=rangeInput.value"
                     />
                     <output
                       id="amount"
                       name="amount"
                       min-velue={0}
-                      max-value={500}
+                      max-value={limitPrice}
                       htmlFor="rangeInput"
                     >
-                      0
+                      {price}
                     </output>
                   </div>
                 </div>

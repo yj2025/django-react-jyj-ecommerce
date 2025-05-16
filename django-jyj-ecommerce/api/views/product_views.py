@@ -4,7 +4,7 @@ from store.models import Product, Category
 
 # dev_34
 from api.serializers.product_serializers import ProductSerializer
-
+from django.db.models import Max
 # http://127.0.0.1:8000/api/products/
 # 방식   url         기능
 # GET   products/    list
@@ -132,7 +132,7 @@ class ProductFilter(django_filters.FilterSet):
         model = Product
         fields = ['category', 'min_price', 'max_price']   
 
-
+from rest_framework.decorators import action
 # ModelViewSet
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
@@ -159,3 +159,18 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     # 검색 필드 (?search=아이폰)
     #Product.objects.filter(name__icontains='컴퓨터')
     search_fields = ['name','description'] # 필요에 따라 수정 가능
+    
+    #ViewSet 에서 URL 추가
+    # detail=True	/api/product-list/<pk>/custom/	특정 객체에 대해 작동 (PK 필요)
+    # detail=False	/api/product-list/max_price/	전체 또는 리스트 대상 (PK 불필요)
+    @action(detail=False, methods=['get'] , url_path='max-price')
+    def max_price(self,request):
+        #aggregate 집계 함수
+        # select max(price) as price__max from product
+        # { price__max : null}
+
+        #result = Product.objects.aggregate(Max('price'))
+        #max_price = result['price__max']
+
+        max_price = Product.objects.aggregate(Max('price'))['price__max'] or 0
+        return Response({'max_price': max_price})
