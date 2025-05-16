@@ -19,30 +19,11 @@ export const ShopProvider = ({children}) => {
   //paging관련 
   const [currentPage,setCurrentPage] = useState(1)
   const [totalCount,setTotalCount] = useState(0)
-
-
-
-  // {
-  //   "count": 21,
-  //   "next": "http://127.0.0.1:8000/api/product-list/?ordering=-price&page=2",
-  //   "previous": null,
-  //   "results": [
-  //       {
-  //           "id": 8,
-  //           "category": {
-  //               "id": 4,
-  //               "name": "도서"
-  //           },
-  //           "name": "역사",
-  //           "price": "199.94",
-  //           "description": "역사는(은) 도서 카테고리에 속하는 상품입니다.",
-  //           "image": "http://127.0.0.1:8000/media/upload/product/%EC%97%AD%EC%82%AC_rpRPjCl.jpg",
-  //           "is_sale": false,
-  //           "sale_price": null
-  //       },
-
-  //상품 목록 호출
   
+  //min max 필터링
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(null);
+ 
 
   const fetchProducsts = async () =>{
     
@@ -52,6 +33,9 @@ export const ShopProvider = ({children}) => {
         search,
         ordering,
         category,
+        min_price : minPrice,
+        max_price : maxPrice,        
+
       })
       console.log(resonse.data)
       setProducts(resonse.data.results);
@@ -65,7 +49,7 @@ export const ShopProvider = ({children}) => {
   //조건이 변경될때 마다 API 다시 호출
   useEffect(()=>{
       fetchProducsts()
-  },[currentPage,search,ordering,category])
+  },[currentPage,search,ordering,category,minPrice,maxPrice])
 
   const value = {
     search,
@@ -79,7 +63,8 @@ export const ShopProvider = ({children}) => {
     setOrdering,
     category,
     setCategory,
-
+    setMinPrice,
+    setMaxPrice
   }
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>

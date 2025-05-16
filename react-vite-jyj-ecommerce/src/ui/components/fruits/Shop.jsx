@@ -1,4 +1,3 @@
-
 import { getCategories } from "@/api/CategoryApi"
 import { useShop } from "@/contexts/ShopContext"
 import { useEffect, useState } from "react"
@@ -8,7 +7,7 @@ import { getProductMaxPrice } from "@/api/ProductApi"
 //dev_10_Fruit
 const Shop = () => {
 
-const {setSearch,products,setOrdering,setCategory,totalCount,currentPage,setCurrentPage} = useShop()
+const {setSearch,products,setOrdering,setCategory,totalCount,currentPage,setCurrentPage,setMaxPrice,setMinPrice} = useShop()
 //categories = null
 const [categories, setCategories] = useState([])
 
@@ -31,9 +30,17 @@ useEffect(  () => {
 const handleSearchChange = (event)=>{
   setSearch(event.target.value); 
   setCategory("")
+
+  setCurrentPage(1)
 }
-const handleOrderingChange = (event)=>{setOrdering(event.target.value)}
-const handleCategoryClick =(categoryId) => {setCategory(categoryId)}          
+const handleOrderingChange = (event)=>{
+  setOrdering(event.target.value)
+  setCurrentPage(1)
+}
+const handleCategoryClick =(categoryId) => {
+  setCategory(categoryId);
+  setCurrentPage(1)
+}          
                         // <Pagination
                         //   activePage={currentPage}
                         //   itemsCountPerPage={12}
@@ -101,6 +108,15 @@ const handlePriceChange = (e) => {
   const value = parseFloat(e.target.value)
 
   setPrice(value) 
+  
+  //min=0 값과 max 값 으로 필터링
+  setMinPrice(0)
+  setMaxPrice(value)
+  
+  //슬라이더 값 변경시 카테고리는 초기화
+  setCurrentPage(1)
+  setCategory("")
+
 }
 
 
