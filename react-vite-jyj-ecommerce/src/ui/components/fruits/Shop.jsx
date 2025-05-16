@@ -20,7 +20,7 @@ useEffect(  () => {
   .then( (res) => {
     setCategories(res.data)
     console.log(res.data)
-  })
+  })  
   .catch(err => console.log(err))
 
 },[])
