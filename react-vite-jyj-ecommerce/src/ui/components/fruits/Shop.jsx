@@ -2,11 +2,12 @@
 import { getCategories } from "@/api/CategoryApi"
 import { useShop } from "@/contexts/ShopContext"
 import { useEffect, useState } from "react"
-
+import Pagination from 'react-js-pagination'
+import '@/assets/paging/css/paging.css'
 //dev_10_Fruit
 const Shop = () => {
 
-const {setSearch,products,seting,setCategory} = useShop()
+const {setSearch,products,setOrdering,setCategory,totalCount,currentPage,setCurrentPage} = useShop()
 //categories = null
 const [categories, setCategories] = useState([])
 
@@ -20,16 +21,41 @@ useEffect(  () => {
   .then( (res) => {
     setCategories(res.data)
     console.log(res.data)
-  })  
+  })
   .catch(err => console.log(err))
 
 },[])
 
 //"GET /api/product-list/?page=1&search=&ordering=price&category=37&page_size=12 HTTP/1.1"
-const handleSearchChange = (event)=>{setSearch(event.target.value)}
+const handleSearchChange = (event)=>{
+  setSearch(event.target.value); 
+  setCategory("")
+}
 const handleOrderingChange = (event)=>{setOrdering(event.target.value)}
-
 const handleCategoryClick =(categoryId) => {setCategory(categoryId)}          
+                        // <Pagination
+                        //   activePage={currentPage}
+                        //   itemsCountPerPage={12}
+                        //   totalItemsCount={totalCount}
+                        //   pageRangeDisplayed={5}
+                        //   onChange={handlePageChange}
+                        //   itemClass="rounded"
+                        //   linkClass="rounded"
+                        //   prevPageText="‹"
+                        //   nextPageText="›"
+                        // />
+                        
+const handlePageChange = (pageNumber) => {
+  setCurrentPage(pageNumber)
+
+  //스크롤 맨 위로 이동
+  window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+  });
+
+}
+
 
 return (
 <>
@@ -353,39 +379,23 @@ return (
                   ))
                 }
                
-
-
-
-
-
                 <div className="col-12">
-                  <div className="pagination d-flex justify-content-center mt-5">
-                    <a href="#" className="rounded">
-                      «
-                    </a>
-                    <a href="#" className="active rounded">
-                      1
-                    </a>
-                    <a href="#" className="rounded">
-                      2
-                    </a>
-                    <a href="#" className="rounded">
-                      3
-                    </a>
-                    <a href="#" className="rounded">
-                      4
-                    </a>
-                    <a href="#" className="rounded">
-                      5
-                    </a>
-                    <a href="#" className="rounded">
-                      6
-                    </a>
-                    <a href="#" className="rounded">
-                      »
-                    </a>
+                  <div className=" d-flex justify-content-center mt-5">
+                        <Pagination
+                          activePage={currentPage}
+                          itemsCountPerPage={12}
+                          totalItemsCount={totalCount}
+                          pageRangeDisplayed={5}
+                          onChange={handlePageChange}
+                          itemClass="rounded"
+                          linkClass="rounded"
+                          prevPageText="‹"
+                          nextPageText="›"
+                        />
                   </div>
                 </div>
+
+
               </div>
             </div>
           </div>

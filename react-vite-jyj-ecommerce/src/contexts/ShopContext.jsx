@@ -8,12 +8,18 @@ export const useShop = () => useContext(ShopContext)
 
 export const ShopProvider = ({children}) => {
 
-  const [currentPage,setCurrentPage] = useState(1)
+  // 정렬,페이징, 카테고리 분류된 상품들
   const [products,setProducts] = useState([])
+  //검색 관련
   const [search,setSearch] = useState("")
+  //정렬 관련
   const [ordering,setOrdering] = useState("")
-  
+  //카테고리 분류
   const [category,setCategory] = useState("")
+  //paging관련 
+  const [currentPage,setCurrentPage] = useState(1)
+  const [totalCount,setTotalCount] = useState(0)
+
 
 
   // {
@@ -47,6 +53,7 @@ export const ShopProvider = ({children}) => {
       })
       console.log(resonse.data)
       setProducts(resonse.data.results);
+      setTotalCount(resonse.data.count);
     
     } catch (error) {
       console.error("상품 목록을 불러오는 중 오류 발생:", error);
@@ -63,12 +70,14 @@ export const ShopProvider = ({children}) => {
     setSearch,
     currentPage,
     setCurrentPage,
+    totalCount,
     products,
     setProducts,
     ordering,
     setOrdering,
     category,
-    setCategory,    
+    setCategory,
+
   }
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>
