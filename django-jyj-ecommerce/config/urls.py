@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -11,7 +12,9 @@ urlpatterns = [
     path("orders/", include("orders.urls")),  # dev_24
     path("payment/", include("payment.urls")),  # dev_26
     path("accounts/", include("allauth.urls")),  # # dev_27 소셜로그인
-    path("api/", include("api.urls")),  # dev_28    
+    path("api/", include("api.urls")),  # dev_28
+    # API 문서화
+ 
 ]
 
 # dev_2

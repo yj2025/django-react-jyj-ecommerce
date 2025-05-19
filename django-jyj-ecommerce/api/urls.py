@@ -8,6 +8,9 @@ from django.conf.urls.static import static
 # from api.views import hello_world, hello_world_json, hello_world_drf
 from .views import base_views, product_views, category_views,cart_views,social_views
 
+from drf_spectacular.views import SpectacularJSONAPIView, SpectacularYAMLAPIView, SpectacularSwaggerView, \
+    SpectacularRedocView
+
 app_name = "api"
 
 # dev_38
