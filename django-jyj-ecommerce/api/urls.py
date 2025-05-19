@@ -41,7 +41,7 @@ urlpatterns = [
     # path("hello-world/", base_views.hello_world),
     # path("hello-world-json/", base_views.hello_world_json),
     # path("hello-world-drf/", base_views.hello_world_drf),
-    # dev_29 proudct_view.py
+    # dev_29 product_view.py
     # http://127.0.0.1:8000/api/products/
     # 방식   url                 기능
     # GET  products/            list

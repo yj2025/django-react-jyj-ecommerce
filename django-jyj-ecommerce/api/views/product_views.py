@@ -45,8 +45,7 @@ def products_api(request):
         data = request.data.copy()
 
         # category 정보 추출 후 제거
-        category_data = data.pop("category")
-        category_data = request.data["category"]
+        category_data = data.pop("category") # category_data = request.data["category"]
 
         # get_or_create 는 dict 형식으로 받기 때문에 category_data는 리스트일 수 있어서 주의
         if isinstance(category_data, list):
@@ -139,7 +138,6 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProductSerializer
     pagination_class = ProductPagination
 
-    #  추가
     filterset_class = ProductFilter
     # 필터링 항목 (URL에서 ?category=값 으로 필터링 가능)
     filterset_fields = ['category']

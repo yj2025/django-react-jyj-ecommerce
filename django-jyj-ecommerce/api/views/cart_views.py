@@ -1,4 +1,12 @@
 from rest_framework.views import APIView
+import json
+from decimal import Decimal
+from store.models import Product
+from api.serializers.product_serializers import ProductSerializer
+from cart.cart import CartDRF
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
 # ✅ 카트 API endpoint 예시:
 # HTTP       Method	       Endpoint	 기능
 # GET	   /api/cart/	   장바구니       조회
@@ -6,10 +14,7 @@ from rest_framework.views import APIView
 # PUT	   /api/cart/	   장바구니    상품 수량 변경
 # DELETE   /api/cart/	   상품 제거 or 전체 비우기
 # DELETE에서 product_id를 넘기면 해당 상품만 제거, 안 넘기면 전체 비움 처리됩니다.
-from decimal import Decimal
-from store.models import Product
-from api.serializers.product_serializers import ProductSerializer
-from cart.cart import CartDRF
+
 class CartAPIView(APIView):
     # permission_classes = [IsAuthenticated]
     
@@ -17,16 +22,16 @@ class CartAPIView(APIView):
         """
         장바구니 목록 조회
         """
-        # json 을 딕셔러니 객체로
+        # json -> 딕셔너리 객체로
         cart = json.loads(request.user.old_cart or "{}") 
         
         cart_items = []
         total_quantity = 0
         total_price = Decimal("0.00")
 
-        for proudct_id, item in cart.items():
+        for product_id, item in cart.items():
             try:
-                product = Product.objects.get(id=proudct_id)
+                product = Product.objects.get(id=product_id)
             except Product.DoesNotExist:
                 continue # 없는 상품은 제외
 
@@ -55,27 +60,21 @@ class CartAPIView(APIView):
             }
         )
 
-
     def post(self,request):
         """
         장바구니에 상품 추가
         """
         product_id = request.data.get("product_id")
         quantity = int(request.data.get("quantity",1))
-
         cart = CartDRF(request)
-
       
         try:
             product = Product.objects.get(id=product_id)
-            
             price = product.sale_price if product.is_sale else product.price
             cart.add_to_old_cart(request.user, product.id , price, quantity)
-            
-            return  Response({"message": "상품이 장바구니에서 추가되었습니다."}) 
-        
+            return Response({"message": "상품이 장바구니에서 추가되었습니다."}) 
         except Product.DoesNotExist:
-                return Response({"error": "상품이 존재하지 않습니다."}, status=404)         
+            return Response({"error": "상품이 존재하지 않습니다."}, status=404)         
     
     def put(self,request):
         pass
@@ -85,44 +84,34 @@ class CartAPIView(APIView):
         old_cart에서 상품 제거 또는 전체 삭제
         """
         user = request.user       
-        product_id =  request.data.get("product_id")        
+        product_id = request.data.get("product_id")        
         cart = CartDRF(request)
 
-        #특정 상품제외
+        #특정 상품 제외
         if product_id:
             try:
                 product = Product.objects.get(id=product_id)
                 cart.remove_from_old_cart(user,product_id)
-                return  Response({"message": "상품이 장바구니에서 제거되었습니다."}) 
+                return Response({"message": "상품이 장바구니에서 제거되었습니다."}) 
             except Product.DoesNotExist:
                 return Response({"error": "상품이 존재하지 않습니다."}, status=404)
-        #dev_8_2_Fruit
         #전체 비우기
         else:
             user.old_cart = "{}"
             user.save()
             return Response({"message": "장바구니가 비워졌습니다."}) 
 
-
-
-
-
-import json
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 #dev_6_Fruit
 # POST	   /api/cart/merge	  장바구니에    상품 추가
 class CartMergeAPIView(APIView):
-    permission_classes = [IsAuthenticated] #로그인된 사람만 아래 함수가 실행 되도록
+    permission_classes = [IsAuthenticated] #로그인된 사람만 아래 함수가 실행되도록
 
     def post(self,request):
         """
         localStorage의 장바구니를 서버 old_cart에 병합
         """
         user = request.user
-       
         local_storage_cart = request.data.get("cart","{}")
-
         local_storage_cart = json.loads(local_storage_cart or "{}")
         old_cart = json.loads(user.old_cart or "{}")
 
@@ -134,7 +123,7 @@ class CartMergeAPIView(APIView):
             else:
                 old_cart[product_id] = {"quantity": quantity}
 
-        user.old_cart = json.dumps(old_cart) #json을 string 만들어서 집어 넣어야함
+        user.old_cart = json.dumps(old_cart) #json을 string 만들어서 집어넣어야 함
         user.save()
 
         return Response({"message": "장바구니가 병합되었습니다."})
