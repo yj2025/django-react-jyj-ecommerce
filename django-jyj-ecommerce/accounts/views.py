@@ -21,80 +21,90 @@ from store.models import Product
 
 
 def logout_user(request):
-    logout(request)  # session 에 저장된 sessionid 삭제
+    """
+    사용자 로그아웃 처리
+    세션에서 사용자 정보를 삭제하고 메인 페이지로 리다이렉트
+    """
+    logout(request)
+    messages.success(request, "로그아웃되었습니다.")
     return redirect("/")
 
 
 def login_user(request):
-
+    """
+    사용자 로그인 처리
+    POST 요청 시 사용자 인증 및 로그인 처리
+    GET 요청 시 로그인 페이지 렌더링
+    """
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)  # session key 생성및 세션키 DB 저장
-
-            # dev_23
+            login(request, user)
+            
+            # 저장된 장바구니 정보 복원
             current_user = User.objects.get(id=request.user.id)
-            saved_cart = (
-                current_user.old_cart
-            )  # {"3": {"quantity": 1, "price": "24000"}}
-            # add
-            #
+            saved_cart = current_user.old_cart
             cart = Cart(request)
 
+            # 현재 장바구니가 있으면 DB에 저장
             if len(cart) > 0:
                 cart.cart_to_db()
 
+            # 저장된 장바구니가 있으면 복원
             if saved_cart:
-                converted_cart = json.loads(saved_cart)  # string 을 Json 객체로
-
-                # {"1": {"quantity": 5, "price": "10000"}}
-                # loop
+                converted_cart = json.loads(saved_cart)
                 for product_id, data in converted_cart.items():
                     quantity = data["quantity"]
-                    print("상품 ID:", product_id)  # 1
-                    print("수량:", quantity)  # 5
                     product = Product.objects.get(id=product_id)
                     cart.add(product, quantity)
 
-            messages.success(request, "You Have been logged in")
+            messages.success(request, "로그인되었습니다.")
             return redirect("/")
         else:
-            messages.success(request, ("There was an error, please try again"))
+            messages.error(request, "로그인에 실패했습니다. 다시 시도해주세요.")
             return redirect("accounts:login_user")
-    else:
-        return render(request, "accounts/login.html", {})
+    
+    return render(request, "accounts/login.html", {})
 
 
 # dev_10
 # dev_11 회원가입 로직
 def register_user(request):
-
+    """
+    사용자 회원가입 처리
+    POST 요청 시 회원가입 처리 및 자동 로그인
+    GET 요청 시 회원가입 페이지 렌더링
+    """
     if request.method == "POST":
-
         if request.POST["password1"] == request.POST["password2"]:
-            form = RegisterUserForm(request.POST)  # 모델에 다가 값을 넣음
+            form = RegisterUserForm(request.POST)
 
             if form.is_valid():
-                form.save()  # 회원 DB 저장
-
-                # 회원가입 하자 마자, 로그인 시켜줌
+                form.save()
+                
+                # 회원가입 후 자동 로그인
                 username = form.cleaned_data.get("username")
                 raw_password = form.cleaned_data.get("password1")
-
                 user = authenticate(username=username, password=raw_password)
                 login(request, user)
 
+                messages.success(request, "회원가입이 완료되었습니다.")
                 return redirect("/")
+            else:
+                messages.error(request, "입력하신 정보를 확인해주세요.")
+        else:
+            messages.error(request, "비밀번호가 일치하지 않습니다.")
 
-    else:
-        form = RegisterUserForm()
-
+    form = RegisterUserForm()
     return render(request, "accounts/register.html", {"form": form})
 
 
 # dev_27
 def kakao_login_user(request):
+    """
+    카카오 로그인 페이지 렌더링
+    """
     return render(request, "accounts/kakao_login.html")

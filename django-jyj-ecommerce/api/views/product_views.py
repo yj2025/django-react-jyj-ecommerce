@@ -45,7 +45,8 @@ def products_api(request):
         data = request.data.copy()
 
         # category 정보 추출 후 제거
-        category_data = data.pop("category") # category_data = request.data["category"]
+        category_data = data.pop("category")
+        category_data = request.data["category"]
 
         # get_or_create 는 dict 형식으로 받기 때문에 category_data는 리스트일 수 있어서 주의
         if isinstance(category_data, list):
@@ -64,8 +65,26 @@ def products_api(request):
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 
+#dev_11_Fruit
+from drf_spectacular.utils import extend_schema, extend_schema_view
 
 # dev_30
+# dev_10_Fruit
+# 함수형 뷰
+@extend_schema(
+    tags=['추가 API 설명'],    
+    methods=['GET'], # 이 데코레이터를 적용할 HTTP 메서드
+    summary='상품들을 조회', # API 요약 설명
+    description='상품의 리스트를 조회하는 API입니다.', # API 상세 설명
+    responses={200: ProductSerializer(many=True)}, # 응답 스키마
+)
+@extend_schema(
+    tags=['추가 API 설명'],    
+    methods=['PUT'], # 이 데코레이터를 적용할 HTTP 메서드
+    summary='상품을 수정', # API 요약 설명
+    description='상품을 수정하는  API입니다.', # API 상세 설명
+    responses={200: ProductSerializer(many=False)}, # 응답 스키마
+)
 @api_view(["GET", "DELETE", "PUT"])
 def product_api(request, pk):
     product = get_object_or_404(Product, id=pk)
@@ -133,11 +152,22 @@ class ProductFilter(django_filters.FilterSet):
 
 from rest_framework.decorators import action
 # ModelViewSet
+@extend_schema_view(
+    list=extend_schema(
+        tags=['prouduct-list_view'],
+        description='extend_schema_view 예제 입니다.'
+    ),
+    create=extend_schema(
+        tags=['prouduct-list_view'],
+        description='새로운 예시 항목을 생성합니다.'
+    )
+)
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     pagination_class = ProductPagination
 
+    #  추가
     filterset_class = ProductFilter
     # 필터링 항목 (URL에서 ?category=값 으로 필터링 가능)
     filterset_fields = ['category']

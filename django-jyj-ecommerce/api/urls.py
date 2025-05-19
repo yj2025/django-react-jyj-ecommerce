@@ -2,19 +2,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
-
-# dev_28
 # from api.views import hello_world, hello_world_json, hello_world_drf
 from .views import base_views, product_views, category_views,cart_views,social_views
-
-from drf_spectacular.views import SpectacularJSONAPIView, SpectacularYAMLAPIView, SpectacularSwaggerView, \
-    SpectacularRedocView
+from rest_framework import routers
 
 app_name = "api"
-
-# dev_38
-from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r"categories", category_views.CategoryViewSet)
@@ -40,11 +32,12 @@ router.register("payments",PaymentViewSet)
 from api.views.product_views import ProductViewSet
 router.register("product-list",ProductViewSet)
 
+
 urlpatterns = [
     # path("hello-world/", base_views.hello_world),
     # path("hello-world-json/", base_views.hello_world_json),
     # path("hello-world-drf/", base_views.hello_world_drf),
-    # dev_29 product_view.py
+    # dev_29 proudct_view.py
     # http://127.0.0.1:8000/api/products/
     # 방식   url                 기능
     # GET  products/            list

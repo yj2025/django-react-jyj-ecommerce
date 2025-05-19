@@ -10,8 +10,20 @@ from payment.models import Payment
 from api.serializers.payment_serializers import PaymentSerializer, ShippingAddressSerializer
 
 
-
+from drf_spectacular.utils import extend_schema, extend_schema_view
 #dev_8_2_Fruit
+#dev_10_Fruit
+@extend_schema_view(
+    list=extend_schema(
+				tags=['payment_view'], 
+				description='extend_schema_view로 꾸미기'
+		),
+    create=extend_schema(tags=['payment_view']),
+    retrieve=extend_schema(tags=['payment_view'], description="단일 예시 항목의 상세 정보를 반환합니다."),
+    update=extend_schema(tags=['payment_view'],description="기존 예시 항목을 업데이트합니다."),
+    partial_update=extend_schema(tags=['payment_view'],description="기존 예시 항목의 일부를 업데이트합니다."),
+    destroy=extend_schema(tags=['payment_view'], description="기존 예시 항목을 삭제합니다.")
+)
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
@@ -20,9 +32,12 @@ class PaymentViewSet(viewsets.ModelViewSet):
     # create 커스텀 마이징
     # POST /api/payments/ – 결제 내역 생성 커스텀 마이징
     def create(self,request,*args, **kwargs):
-        # 1. 주문 생성
-        # 2. 배송지 저장 (user, order를 함께 저장)
-        # 3. 결제 저장 (serializer 사용 가능)
+        """
+        #### 1. 주문 생성
+        #### 2. 배송지 저장 (user, order를 함께 저장)
+        #### 3. 결제 저장 (serializer 사용 가능)
+        
+        """
 
         try:
             user = request.user
@@ -64,7 +79,6 @@ class PaymentViewSet(viewsets.ModelViewSet):
             print("3. 결제 저장 완료", payment)
 
             # 4. 응답 반환
-
             return Response(
                 {
                     "message":"결제 및 주문 저장 성공",
@@ -82,7 +96,4 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     "detail": "❌ 결제 처리 중 오류가 발생했습니다.",
                 },
                 status=status.HTTP_400_BAD_REQUEST,
-            )    
-
-
-
+            )

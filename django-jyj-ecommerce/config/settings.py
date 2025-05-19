@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -61,7 +63,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "dj_rest_auth", # REST API 기반 소셜 로그인 모듈
     "dj_rest_auth.registration", #회원 가입 모듈
-    'drf_spectacular',  # API 문서화
+    "drf_spectacular",#dev_11_Fruit
 ]
 
 MIDDLEWARE = [
@@ -81,7 +83,7 @@ MIDDLEWARE = [
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:5173",  # 프론트 도메인
 # ]
-CORS_ORIGIN_ALLOW_ALL = True  # 어떠한 출처든 상관없이 정보를 공유
+CORS_ORIGIN_ALLOW_ALL = True  # 개발 환경에서만 사용. 프로덕션에서는 특정 도메인만 허용하도록 변경 필요
 
 
 ROOT_URLCONF = "config.urls"
@@ -232,8 +234,8 @@ SOCIALACCOUNT_PROVIDERS = {
         "SCOPE": [
             #dev_9_1_Fruit
             "account_email",
-            # "profile",
-            # "gender",
+            "profile",
+            "gender",
         ],
         # 추가
         "AUTH_PARAMS": {
@@ -271,7 +273,7 @@ REST_FRAMEWORK = {
         #"rest_framework_simplejwt.authentication.JWTAuthentication",
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication", #dev_9_2_Fruit
     ),
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema", #dev_11_Fruit
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",#dev_11_Fruit
 }
 
 from datetime import timedelta
@@ -330,20 +332,20 @@ SOCIALACCOUNT_LOGIN_ON_GET = True #브라우저에서 단순히 링크 클릭이
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False
 
-
+#dev_11_Fruit
 SPECTACULAR_SETTINGS = {
     # General schema metadata. Refer to spec for valid inputs
     # https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#openapi-object
-    'TITLE': '쇼핑몰 - drf-spectacular API Document',
+    'TITLE': 'drf-spectacular API Document',
     'DESCRIPTION': 'drf-specatular 를 사용해서 만든 API 문서입니다.',
     'SWAGGER_UI_SETTINGS': {
         'dom_id': '#swagger-ui',
         'layout': 'BaseLayout', 
-        'deepLinking': True,
+        'deepLinking': True,  
         'displayOperationId': True,
         'filter': True,
     },
-
+   
     'LICENSE': {
         'name': 'MIT License',
     },
@@ -355,6 +357,6 @@ SPECTACULAR_SETTINGS = {
     'CONTACT': {
         'name': 'John Doe',
         'email': 'johndoe@example.com',
-        'url': 'https://www.example.com/',
+        'url': 'https://www.example.com',
     }
 }

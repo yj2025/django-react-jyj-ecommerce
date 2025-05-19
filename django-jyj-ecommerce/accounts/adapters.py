@@ -28,28 +28,53 @@ from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 
 
 class KakaoSocialAccountAdapter(DefaultSocialAccountAdapter):
-    # 소셜 로그인 유저 객체를 초기화
-    # User 모델 필드를 채워주는 메서드
+    """
+    카카오 소셜 로그인 어댑터
+    카카오 로그인 시 사용자 정보를 매핑하고 초기화하는 역할을 수행
+    
+    소셜 로그인 처리 흐름:
+    1. Provider callback → views.py
+    2. complete_social_login(request, sociallogin)
+    3. get_adapter(request) → DefaultSocialAccountAdapter
+    4. adapter.pre_social_login()
+    5. adapter.populate_user()
+    6. adapter.save_user()
+    7. login(request, user)
+    """
+
     def populate_user(self, request, sociallogin, data):
+        """
+        소셜 로그인 사용자 정보 초기화
+        카카오에서 받은 정보를 User 모델 필드에 매핑
+        
+        Args:
+            request: HTTP 요청 객체
+            sociallogin: 소셜 로그인 정보
+            data: 추가 데이터
+            
+        Returns:
+            User: 초기화된 사용자 객체
+        """
         user = super().populate_user(request, sociallogin, data)
 
+        # 카카오 계정 정보 추출
         kakao_data = sociallogin.account.extra_data
-        kakao_account = kakao_data.get("kakao_account",{})
-        profile = kakao_account.get("profile",{})
+        kakao_account = kakao_data.get("kakao_account", {})
+        profile = kakao_account.get("profile", {})
         
-        #필수 필드
-        user.email = kakao_account.get("email","")
+        # 필수 필드 설정
+        user.email = kakao_account.get("email", "")
         user.profile_image = profile.get("profile_image_url")
 
-         # gender 매핑 (카카오 → M/F)
+        # 성별 매핑 (카카오 → M/F)
         kakao_gender = kakao_account.get("gender")
         if kakao_gender == "male":
             user.gender = "M"
         elif kakao_gender == "female":
-             user.gender = "F"
+            user.gender = "F"
         
-        # job 은 처음 가입 시 default 설정 (예: 기타)
+        # 직업 기본값 설정
         if not user.job:
-            user.job = "E"
+            user.job = "E"  # 기타(Etc.)로 기본 설정
 
         return user
