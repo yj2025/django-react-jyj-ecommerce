@@ -153,8 +153,8 @@ from decimal import Decimal
  # }
 class CartDRF:
     
-    def __init__(self,reqeust):
-        self.request = reqeust
+    def __init__(self,request):
+        self.request = request
     
     def add_to_old_cart(self,user,product_id,price,quantity=1):
         """
