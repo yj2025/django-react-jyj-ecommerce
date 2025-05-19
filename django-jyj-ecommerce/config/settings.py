@@ -231,8 +231,8 @@ SOCIALACCOUNT_PROVIDERS = {
         "SCOPE": [
             #dev_9_1_Fruit
             "account_email",
-            "profile",
-            "gender",
+            # "profile",
+            # "gender",
         ],
         # 추가
         "AUTH_PARAMS": {
